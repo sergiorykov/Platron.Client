@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{14ADEBF8-20C2-490D-918C-EB4C49D3FA23}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Platron.Client</RootNamespace>
+    <AssemblyName>Platron.Client</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\out\Debug\Platron.Client\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\out\Release\Platron.Client\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\out\Release\Platron.Client\Platron.Client.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApiUrls.cs" />
+    <Compile Include="Authentication\Authenticator.cs" />
+    <Compile Include="Callbacks\ResultUrl.cs" />
+    <Compile Include="Exceptions\InvalidResponseApiException.cs" />
+    <Compile Include="Exceptions\ApiException.cs" />
+    <Compile Include="Exceptions\InvalidSignatureApiException.cs" />
+    <Compile Include="Exceptions\ServiceNotAvailableApiException.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\PlatronMoneyExtensions.cs" />
+    <Compile Include="Extensions\UriExtensions.cs" />
+    <Compile Include="Http\ApiConnection.cs" />
+    <Compile Include="Http\ApiRequest.cs" />
+    <Compile Include="Http\ApiResponse.cs" />
+    <Compile Include="Http\Connection.cs" />
+    <Compile Include="Http\HttpRequestEncodingType.cs" />
+    <Compile Include="Http\HttpResponse.cs" />
+    <Compile Include="Http\IApiResponse.cs" />
+    <Compile Include="Http\IConnection.cs" />
+    <Compile Include="Http\IHttpResponse.cs" />
+    <Compile Include="Http\IXmlPipeline.cs" />
+    <Compile Include="Http\Plain\PlainErrorResponse.cs" />
+    <Compile Include="Http\Plain\PlainRequest.cs" />
+    <Compile Include="Extensions\PropertyEncodingExtensions.cs" />
+    <Compile Include="Http\Plain\PlainResponse.cs" />
+    <Compile Include="Authentication\SignatureValueProvider.cs" />
+    <Compile Include="Http\XmlPipeline.cs" />
+    <Compile Include="Models\Errors\ErrorCode.cs" />
+    <Compile Include="Models\Requests\ClientRequest.cs" />
+    <Compile Include="Models\Responses\HtmlResponse.cs" />
+    <Compile Include="Models\Responses\InitPaymentResponse.cs" />
+    <Compile Include="Http\ResponseKnownStatuses.cs" />
+    <Compile Include="PlatronClient.cs" />
+    <Compile Include="Models\Errors\PlatronError.cs" />
+    <Compile Include="Credentials.cs" />
+    <Compile Include="Models\PlatronLanguage.cs" />
+    <Compile Include="Models\PlatronMoney.cs" />
+    <Compile Include="Models\Requests\InitPaymentRequest.cs" />
+    <Compile Include="Models\PlatronPaymentCurrency.cs" />
+    <Compile Include="Http\HttpRequestEncoder.cs" />
+    <Compile Include="Authentication\SaltProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\Responses\ClientResponse.cs" />
+    <Compile Include="Serializers\IXmlSerializer.cs" />
+    <Compile Include="Utils\Ensure.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Logging\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
