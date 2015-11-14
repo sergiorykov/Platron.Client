@@ -4,11 +4,11 @@
     {
         public PlatronError(int code, string description)
         {
-            Code = code;
+            Code = (ErrorCode)code;
             Description = description;
         }
 
-        public int Code { get; }
+        public ErrorCode Code { get; }
         public string Description { get; }
 
         /// <summary>

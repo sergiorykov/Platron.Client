@@ -31,7 +31,7 @@ namespace Platron.Client.Tests
 
             var exception =
                 await Assert.ThrowsAsync<ErrorApiException>(() => client.InitPaymentAsync(initPayment));
-            Assert.Equal((int) ErrorCode.InvalidMerchant, exception.Error.ErrorCode);
+            Assert.Equal(ErrorCode.InvalidMerchant, exception.Error.Code);
         }
 
         [Fact]
@@ -42,7 +42,7 @@ namespace Platron.Client.Tests
 
             var exception =
                 await Assert.ThrowsAsync<ErrorApiException>(() => client.InitPaymentAsync(initPayment));
-            Assert.Equal((int) ErrorCode.InvalidSignature, exception.Error.ErrorCode);
+            Assert.Equal(ErrorCode.InvalidSignature, exception.Error.Code);
         }
 
         [Fact]
