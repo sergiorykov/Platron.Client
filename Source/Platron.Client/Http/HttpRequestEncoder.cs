@@ -50,8 +50,8 @@ namespace Platron.Client.Http
 
         private string GetQueryString(ApiRequest request)
         {
-            var xml = _xmlPipeline.Serialize(request.Plain, "anyroot");
-            var values = GetQueryStringValues(xml);
+            string xml = _xmlPipeline.Serialize(request);
+            List<KeyValuePair<string, string>> values = GetQueryStringValues(xml);
 
             string query;
             using (var content = new FormUrlEncodedContent(values))

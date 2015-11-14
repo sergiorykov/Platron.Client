@@ -12,8 +12,6 @@ namespace Platron.Client.Authentication
         public List<string> Values { get; set; } = new List<string>();
         public string Signature { get; set; }
 
-        public bool IsValid => !string.IsNullOrEmpty(Signature) && Values != null && Values.Count > 0;
-
         public static SignedValues Empty => new SignedValues();
     }
 
@@ -24,34 +22,27 @@ namespace Platron.Client.Authentication
 
         public SignatureValueProvider(IXmlSerializer serializer)
         {
-            Ensure.ArgumentNotNull(serializer, "serializer");
+            Ensure.ArgumentNotNull(serializer, nameof(serializer));
 
             _serializer = serializer;
         }
 
         public List<string> GetValuesToSign(object value)
         {
-            Ensure.ArgumentNotNull(value, "value");
+            Ensure.ArgumentNotNull(value, nameof(value));
 
-            try
-            {
-                var xml = _serializer.Serialize(value, "anyroot");
-                var document = XDocument.Parse(xml);
-                return GetValues(document).Values;
-            }
-            catch (Exception)
-            {
-                return new List<string>();
-            }
+            // Need to serialize plain object to order signing values by their xml names.
+            var xml = _serializer.Serialize(value, "anyroot");
+            return GetSignedValuesCore(xml).Values;
         }
 
         public SignedValues GetSignedValues(string xml)
         {
             Ensure.ArgumentNotNullOrEmptyString(xml, "xml");
+
             try
             {
-                var document = XDocument.Parse(xml);
-                return GetValues(document);
+                return GetSignedValuesCore(xml);
             }
             catch (Exception)
             {
@@ -59,8 +50,9 @@ namespace Platron.Client.Authentication
             }
         }
 
-        private SignedValues GetValues(XDocument document)
+        private SignedValues GetSignedValuesCore(string xml)
         {
+            var document = XDocument.Parse(xml);
             if (document.Root == null)
             {
                 return SignedValues.Empty;
@@ -70,7 +62,7 @@ namespace Platron.Client.Authentication
                 .Elements()
                 .Where(x => x.Name.LocalName != SignatureFieldName)
                 .OrderBy(x => x.Name.LocalName)
-                .SelectMany(GetValues)
+                .SelectMany(GetElementValues)
                 .Where(x => !string.IsNullOrEmpty(x))
                 .ToList();
 
@@ -83,7 +75,7 @@ namespace Platron.Client.Authentication
                    };
         }
 
-        private static IEnumerable<string> GetValues(XElement element)
+        private static IEnumerable<string> GetElementValues(XElement element)
         {
             if (!element.HasElements)
             {
@@ -92,7 +84,7 @@ namespace Platron.Client.Authentication
 
             return element.Elements()
                 .OrderBy(x => x.Name.LocalName)
-                .SelectMany(GetValues);
+                .SelectMany(GetElementValues);
         }
     }
 }

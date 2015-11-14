@@ -24,6 +24,15 @@ namespace Platron.Client
         }
 
         /// <summary>
+        ///     Constructs an instance of ApiException.
+        /// </summary>
+        /// <param name="message">The error message.</param>
+        /// <param name="innerException">Inner exception.</param>
+        public ApiException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        /// <summary>
         ///     Http response.
         /// </summary>
         public IHttpResponse HttpResponse { get; protected set; }

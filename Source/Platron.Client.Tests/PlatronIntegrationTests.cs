@@ -30,8 +30,8 @@ namespace Platron.Client.Tests
             var client = new PlatronClient("0000", "secret");
 
             var exception =
-                await Assert.ThrowsAsync<InvalidResponseApiException>(() => client.InitPaymentAsync(initPayment));
-            Assert.Equal((int) ErrorCode.InvalidMerchant, exception.Response.ErrorCode);
+                await Assert.ThrowsAsync<ErrorApiException>(() => client.InitPaymentAsync(initPayment));
+            Assert.Equal((int) ErrorCode.InvalidMerchant, exception.Error.ErrorCode);
         }
 
         [Fact]
@@ -41,8 +41,8 @@ namespace Platron.Client.Tests
             var client = new PlatronClient(SettingsStorage.Credentials.MerchantId, "secret");
 
             var exception =
-                await Assert.ThrowsAsync<InvalidResponseApiException>(() => client.InitPaymentAsync(initPayment));
-            Assert.Equal((int) ErrorCode.InvalidSignature, exception.Response.ErrorCode);
+                await Assert.ThrowsAsync<ErrorApiException>(() => client.InitPaymentAsync(initPayment));
+            Assert.Equal((int) ErrorCode.InvalidSignature, exception.Error.ErrorCode);
         }
 
         [Fact]

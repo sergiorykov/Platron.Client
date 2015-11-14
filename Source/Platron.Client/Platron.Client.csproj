@@ -46,9 +46,9 @@
     <Compile Include="ApiUrls.cs" />
     <Compile Include="Authentication\Authenticator.cs" />
     <Compile Include="Callbacks\ResultUrl.cs" />
-    <Compile Include="Exceptions\InvalidResponseApiException.cs" />
+    <Compile Include="Exceptions\ErrorApiException.cs" />
     <Compile Include="Exceptions\ApiException.cs" />
-    <Compile Include="Exceptions\InvalidSignatureApiException.cs" />
+    <Compile Include="Exceptions\InvalidResponseApiException.cs" />
     <Compile Include="Exceptions\ServiceNotAvailableApiException.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\PlatronMoneyExtensions.cs" />

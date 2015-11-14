@@ -28,17 +28,17 @@ namespace Platron.Client.Authentication
             request.Plain.MerchantId = Credentials.MerchantId;
             request.Plain.Salt = SaltProvider.Generate();
 
-            var scriptPath = request.Endpoint.GetScriptPath();
-            var values = _valueProvider.GetValuesToSign(request.Plain);
+            string scriptPath = request.Endpoint.GetScriptPath();
+            List<string> values = _valueProvider.GetValuesToSign(request.Plain);
 
             request.Plain.Signature = Sign(scriptPath, values);
         }
 
         public bool Satisfies(IHttpResponse response)
         {
-            var values = _valueProvider.GetSignedValues(response.Body);
-            var scriptPath = response.RequestUri.GetScriptPath();
-            var signature = Sign(scriptPath, values.Values);
+            SignedValues values = _valueProvider.GetSignedValues(response.Body);
+            string scriptPath = response.RequestUri.GetScriptPath();
+            string signature = Sign(scriptPath, values.Values);
 
             return signature == values.Signature;
         }
@@ -54,8 +54,8 @@ namespace Platron.Client.Authentication
             var rawContent = Encoding.UTF8.GetBytes(content);
             using (var md5 = MD5.Create())
             {
-                var rawSignature = md5.ComputeHash(rawContent);
-                var signature = Hex(rawSignature);
+                byte[] rawSignature = md5.ComputeHash(rawContent);
+                string signature = Hex(rawSignature);
                 return signature;
             }
         }

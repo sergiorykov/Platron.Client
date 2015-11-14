@@ -1,22 +1,18 @@
-﻿using Platron.Client.Http;
-using Platron.Client.Http.Plain;
+using Platron.Client.Http;
 
 namespace Platron.Client
 {
+    /// <summary>
+    ///     Represents error in validating service response signature.
+    /// </summary>
     public sealed class InvalidResponseApiException : ApiException
     {
+        /// <summary>
+        ///     Constructs an instance of exception.
+        /// </summary>
         public InvalidResponseApiException(string message, IHttpResponse httpResponse) : base(message)
         {
             HttpResponse = httpResponse;
         }
-
-        public InvalidResponseApiException(PlainErrorResponse response, IHttpResponse httpResponse)
-            : base(response.ErrorDescription)
-        {
-            Response = response;
-            HttpResponse = httpResponse;
-        }
-
-        public PlainErrorResponse Response { get; }
     }
 }

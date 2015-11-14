@@ -86,14 +86,14 @@ namespace Platron.Client.Http
             var response = await ExecuteAsync(apiRequest).ConfigureAwait(false);
             if (!response.IsXml())
             {
-                throw new InvalidResponseApiException(
-                    $"Expected xml content but received '{response.ContentType}'", response);
+                throw new InvalidResponseApiException($"Expected xml content but received '{response.ContentType}'",
+                    response);
             }
 
             HandleErrors(response);
             if (!_authenticator.Satisfies(response))
             {
-                throw new InvalidSignatureApiException(response);
+                throw new InvalidResponseApiException("Response signature is invalid", response);
             }
 
             var apiResponse = _xmlPipeline.Deserialize<TPlainResponse>(response);
@@ -115,7 +115,7 @@ namespace Platron.Client.Http
                     response);
             }
 
-            // nothing to handle: all possible errors is hidden inside of html.
+            // nothing to handle: It's always OK 200 and all possible errors are hidden inside of html.
             return new ApiResponse<string>(response, response.Body);
         }
 
@@ -129,10 +129,10 @@ namespace Platron.Client.Http
 
             if (HasSignature(errorResponse.Body) && !_authenticator.Satisfies(response))
             {
-                throw new InvalidSignatureApiException(response);
+                throw new InvalidResponseApiException("Error response signature is invalid", response);
             }
 
-            throw new InvalidResponseApiException(errorResponse.Body, response);
+            throw new ErrorApiException(errorResponse.Body, response);
         }
 
         private bool HasSignature(PlainErrorResponse response)
@@ -150,7 +150,10 @@ namespace Platron.Client.Http
                     .SendAsync(httpRequest, HttpCompletionOption.ResponseContentRead)
                     .ConfigureAwait(false);
 
-                var body = await message.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var body = await message.Content
+                    .ReadAsStringAsync()
+                    .ConfigureAwait(false);
+
                 var contentType = GetContentMediaType(message.Content);
 
                 return new HttpResponse(
@@ -168,11 +171,11 @@ namespace Platron.Client.Http
                     message = e.InnerException.Message;
                 }
 
-                throw new ServiceNotAvailableApiException(message);
+                throw new ServiceNotAvailableApiException(message, e);
             }
             catch (Exception e)
             {
-                throw new ServiceNotAvailableApiException(e.Message);
+                throw new ServiceNotAvailableApiException(e.Message, e);
             }
         }
 
