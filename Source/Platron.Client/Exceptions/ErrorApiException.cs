@@ -8,10 +8,10 @@ namespace Platron.Client
         public ErrorApiException(PlainErrorResponse error, IHttpResponse httpResponse)
             : base(error.ErrorDescription)
         {
-            Error = error;
+            Error = new PlatronError(error.ErrorCode, error.ErrorDescription);
             HttpResponse = httpResponse;
         }
 
-        public PlainErrorResponse Error { get; }
+        public PlatronError Error { get; }
     }
 }

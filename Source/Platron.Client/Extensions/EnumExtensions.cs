@@ -12,12 +12,6 @@ namespace Platron.Client.Extensions
             return GetAttributeValue<DescriptionAttribute, string>(enumeration, x => x.Description, x => x.ToString());
         }
 
-        public static Expected GetAttributeValue<T, Expected>(this Enum enumeration, Func<T, Expected> expression)
-            where T : Attribute
-        {
-            return GetAttributeValue(enumeration, expression, _ => default(Expected));
-        }
-
         public static Expected GetAttributeValue<T, Expected>(this Enum enumeration, Func<T, Expected> expression,
             Func<Enum, Expected> defaultValue)
             where T : Attribute
