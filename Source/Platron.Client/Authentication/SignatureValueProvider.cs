@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Platron.Client.Http.Callbacks;
 using Platron.Client.Serializers;
 using Platron.Client.Utils;
 
@@ -34,6 +35,25 @@ namespace Platron.Client.Authentication
             // Need to serialize plain object to order signing values by their xml names.
             var xml = _serializer.Serialize(value, "anyroot");
             return GetSignedValuesCore(xml).Values;
+        }
+
+        public SignedValues GetSignedValues(CallbackRequest request)
+        {
+            Ensure.ArgumentNotNull(request, nameof(request));
+
+            var values = request.QueryString.Cast<string>()
+                .Where(name => name != SignatureFieldName)
+                .OrderBy(name => name)
+                .Select(name => request.QueryString[name])
+                .ToList();
+
+            var signature = request.QueryString[SignatureFieldName];
+
+            return new SignedValues
+                   {
+                       Values = values,
+                       Signature = signature
+                   };
         }
 
         public SignedValues GetSignedValues(string xml)

@@ -9,5 +9,6 @@ namespace Platron.Client.Http
             where TPlainResponse : PlainResponse;
 
         string Serialize(ApiRequest request);
+        string Serialize(ApiCallbackResponse request);
     }
 }

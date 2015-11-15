@@ -2,9 +2,13 @@
 {
     public sealed class PlatronError
     {
-        public PlatronError(int code, string description)
+        public PlatronError(int code, string description) : this((ErrorCode)code, description)
         {
-            Code = (ErrorCode)code;
+        }
+
+        public PlatronError(ErrorCode code, string description)
+        {
+            Code = code;
             Description = description;
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Platron.Client.Http.Callbacks;
 using Platron.Client.Http.Plain;
 using Platron.Client.Utils;
 
@@ -13,6 +14,7 @@ namespace Platron.Client.Http
         }
 
         public IConnection Connection { get; }
+        public ICallbackResponder Callback => Connection.Callback;
 
         public async Task<TResponse> SendAsync<TResponse, TPlainResponse>(Uri uri, ClientRequest request)
             where TResponse : ClientResponse<TPlainResponse>, new()

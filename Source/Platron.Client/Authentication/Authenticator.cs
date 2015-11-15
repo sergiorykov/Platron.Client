@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Platron.Client.Extensions;
 using Platron.Client.Http;
+using Platron.Client.Http.Callbacks;
 using Platron.Client.Serializers;
 using Platron.Client.Utils;
 
@@ -32,6 +33,25 @@ namespace Platron.Client.Authentication
             List<string> values = _valueProvider.GetValuesToSign(request.Plain);
 
             request.Plain.Signature = Sign(scriptPath, values);
+        }
+
+        public void Apply(ApiCallbackResponse response)
+        {
+            response.Plain.Salt = SaltProvider.Generate();
+
+            string scriptPath = response.Endpoint.GetScriptPath();
+            List<string> values = _valueProvider.GetValuesToSign(response.Plain);
+
+            response.Plain.Signature = Sign(scriptPath, values);
+        }
+
+        public bool Satisfies(CallbackRequest request)
+        {
+            SignedValues values = _valueProvider.GetSignedValues(request);
+            string scriptPath = request.Uri.GetScriptPath();
+            string signature = Sign(scriptPath, values.Values);
+
+            return signature == values.Signature;
         }
 
         public bool Satisfies(IHttpResponse response)

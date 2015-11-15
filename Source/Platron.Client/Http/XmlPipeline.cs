@@ -24,7 +24,7 @@ namespace Platron.Client.Http
             var emptyNamespace = new XmlSerializerNamespaces();
             emptyNamespace.Add(string.Empty, string.Empty);
 
-            var serializer = new XmlSerializer(value.GetType(), root);
+            var serializer = new XmlSerializer(value.GetType(), new XmlRootAttribute(root));
             using (TextWriter writer = new EncodingStringWriter(Encoding.UTF8))
             {
                 serializer.Serialize(writer, value, emptyNamespace);
@@ -56,6 +56,12 @@ namespace Platron.Client.Http
         {
             Ensure.ArgumentNotNull(request, nameof(request));
             return Serialize(request.Plain, RequestRoot);
+        }
+
+        public string Serialize(ApiCallbackResponse request)
+        {
+            Ensure.ArgumentNotNull(request, nameof(request));
+            return Serialize(request.Plain, ResponseRoot);
         }
 
         /// <summary>

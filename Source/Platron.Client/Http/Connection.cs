@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Platron.Client.Authentication;
+using Platron.Client.Http.Callbacks;
 using Platron.Client.Http.Plain;
 using Platron.Client.Utils;
 
@@ -52,11 +53,15 @@ namespace Platron.Client.Http
             _httpClient = new HttpClient {BaseAddress = baseAddress};
             _authenticator = new Authenticator(credentials, xmlPipeline);
             _httpRequestEncoder = new HttpRequestEncoder(xmlPipeline);
+
+            Callback = new CallbackResponder(_authenticator, _xmlPipeline);
         }
 
         public Uri BaseAddress { get; }
 
         public HttpRequestEncodingType EncodingType => _httpRequestEncoder.EncodingType;
+
+        public ICallbackResponder Callback { get; }
 
         public Connection EnableProxy(WebProxy proxy)
         {
@@ -121,7 +126,7 @@ namespace Platron.Client.Http
 
         private void HandleErrors(HttpResponse response)
         {
-            var errorResponse = _xmlPipeline.Deserialize<PlainErrorResponse>(response);
+            var errorResponse = _xmlPipeline.Deserialize<PlainErrorWithCodeResponse>(response);
             if (errorResponse.Body.Status == ResponseKnownStatuses.Ok)
             {
                 return;
@@ -132,10 +137,11 @@ namespace Platron.Client.Http
                 throw new InvalidResponseApiException("Error response signature is invalid", response);
             }
 
-            throw new ErrorApiException(errorResponse.Body, response);
+            var error = new PlatronError(errorResponse.Body.ErrorCode, errorResponse.Body.ErrorDescription);
+            throw new ErrorApiException(error, response);
         }
 
-        private bool HasSignature(PlainErrorResponse response)
+        private bool HasSignature(PlainErrorWithCodeResponse response)
         {
             return !errorCodesWithoutSignature.Contains((ErrorCode) response.ErrorCode);
         }

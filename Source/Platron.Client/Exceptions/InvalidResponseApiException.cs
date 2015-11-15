@@ -5,7 +5,7 @@ namespace Platron.Client
     /// <summary>
     ///     Represents error in validating service response signature.
     /// </summary>
-    public sealed class InvalidResponseApiException : ApiException
+    public sealed class InvalidResponseApiException : ApiHttpException
     {
         /// <summary>
         ///     Constructs an instance of exception.

@@ -16,7 +16,7 @@ namespace Platron.Client.Tests.Http
             var response = Mock.Of<IHttpResponse>(x => x.Body == content);
 
             var pipeline = new XmlPipeline();
-            var apiResponse = pipeline.Deserialize<PlainErrorResponse>(response);
+            var apiResponse = pipeline.Deserialize<PlainErrorWithCodeResponse>(response);
             Assert.Equal("error", apiResponse.Body.Status);
         }
     }

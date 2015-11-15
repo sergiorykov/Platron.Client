@@ -22,6 +22,8 @@ namespace Platron.Client
         {
             Ensure.ArgumentNotNull(connection, "connection");
             _connection = new ApiConnection(connection);
+
+            ResultUrl = new ResultUrlClient(_connection);
         }
 
         public Task<HtmlResponse> InitPaymentAsHtmlAsync(InitPaymentRequest request)
@@ -35,5 +37,7 @@ namespace Platron.Client
             return _connection.SendAsync<InitPaymentResponse, InitPaymentResponse.Plain>(
                 ApiUrls.InitPayment(InitPaymentResponseType.RedirectLink), request);
         }
+
+        public ResultUrlClient ResultUrl { get; private set; }
     }
 }

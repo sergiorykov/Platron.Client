@@ -1,14 +1,17 @@
 ﻿using Platron.Client.Http;
-using Platron.Client.Http.Plain;
+using Platron.Client.Utils;
 
 namespace Platron.Client
 {
-    public sealed class ErrorApiException : ApiException
+    public sealed class ErrorApiException : ApiHttpException
     {
-        public ErrorApiException(PlainErrorResponse error, IHttpResponse httpResponse)
-            : base(error.ErrorDescription)
+        public ErrorApiException(PlatronError error, IHttpResponse httpResponse)
+            : base(error.Description)
         {
-            Error = new PlatronError(error.ErrorCode, error.ErrorDescription);
+            Ensure.ArgumentNotNull(error, nameof(error));
+            Ensure.ArgumentNotNull(httpResponse, nameof(httpResponse));
+
+            Error = error;
             HttpResponse = httpResponse;
         }
 
