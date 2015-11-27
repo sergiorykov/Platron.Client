@@ -39,16 +39,16 @@ namespace Platron.Client.Http
 
             try
             {
-                var serializer = new XmlSerializer(typeof (TPlainResponse), ResponseRoot);
+                var serializer = new XmlSerializer(typeof (TPlainResponse), new XmlRootAttribute(ResponseRoot));
                 using (var reader = new StringReader(response.Body))
                 {
                     var plain = (TPlainResponse) serializer.Deserialize(reader);
                     return new ApiResponse<TPlainResponse>(response, plain);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new InvalidResponseApiException("Xml content in response cann't be decoded", response);
+                throw new InvalidResponseApiException("Xml content in response cann't be decoded", response, e);
             }
         }
 
