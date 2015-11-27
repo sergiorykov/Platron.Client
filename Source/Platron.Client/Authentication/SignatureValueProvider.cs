@@ -78,12 +78,13 @@ namespace Platron.Client.Authentication
                 return SignedValues.Empty;
             }
 
+            // empty values - must be signed too
             var values = document.Root
                 .Elements()
                 .Where(x => x.Name.LocalName != SignatureFieldName)
                 .OrderBy(x => x.Name.LocalName)
                 .SelectMany(GetElementValues)
-                .Where(x => !string.IsNullOrEmpty(x))
+                .Where(x => x != null)
                 .ToList();
 
             var signature = document.Root.Element(SignatureFieldName)?.Value;
