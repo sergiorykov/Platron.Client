@@ -40,7 +40,7 @@ namespace Platron.Client
                        Encoding = Encoding,
                        LifeTime = LifeTime.ToPlatronTime(),
                        Language = Language.GetDescription(),
-                       ResultUrl = ResultUrl?.AbsolutePath,
+                       ResultUrl = ResultUrl?.AbsoluteUri,
                        UserPhone = UserPhone,
                        NeedUserPhoneNotification = NeedUserPhoneNotification.ToZeroOrOne(),
                        UserContactEmail = UserContactEmail,
