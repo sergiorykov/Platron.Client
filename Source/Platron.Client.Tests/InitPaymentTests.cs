@@ -3,12 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Platron.Client.Extensions;
 using Platron.Client.Http;
-using Platron.Client.Http.Callbacks;
 using Xunit;
 
 namespace Platron.Client.Tests
 {
-    public sealed class PlatronIntegrationTests
+    public sealed class InitPaymentTests
     {
         [Theory]
         [InlineData("https://platrondoesnotlivehere.com", "DNS cann't resolve")]
@@ -25,18 +24,6 @@ namespace Platron.Client.Tests
         }
 
         [Fact]
-        public void ResultUrl_ReturnOk_ValidXml()
-        {
-            var client = new PlatronClient("0000", "secret");
-            Uri callback = new Uri("https://supershop.com/platron/result?pg_salt=49c1e&pg_order_id=e76346a58c9c4c44bfa4e2f8600d9215&pg_payment_id=21404388&pg_amount=1.0000&pg_currency=RUR&pg_net_amount=0.94&pg_ps_amount=1&pg_ps_full_amount=1.00&pg_ps_currency=RUR&pg_payment_system=YANDEXMONEY&pg_result=1&pg_payment_date=2015-10-28+00%3A16%3A09&pg_can_reject=1&pg_user_phone=79261238736&pg_need_phone_notification=1&pg_sig=37d26729ec04e12b08e633e7530d5eb2");
-            ResultUrlRequest resultUrl = client.ResultUrl.Parse(callback);
-
-            CallbackResponse ok = client.ResultUrl.ReturnOk(resultUrl, "all done");
-            Assert.NotNull(ok);
-            Assert.NotNull(ok.Content);
-        }
-
-        [Fact]
         public async Task InitPayment_InvalidMerchant_ThrowsInvalidResponse()
         {
             var initPayment = new InitPaymentRequest(1.Rur(), "sample description");
@@ -45,14 +32,6 @@ namespace Platron.Client.Tests
             var exception =
                 await Assert.ThrowsAsync<ErrorApiException>(() => client.InitPaymentAsync(initPayment));
             Assert.Equal(ErrorCode.InvalidMerchant, exception.Error.Code);
-        }
-
-        [Fact]
-        public void ResultUrl_ValidUri_Succeeds()
-        {
-            Uri value = new Uri("http://simplestore.com/platron/result?pg_salt=49c1e&pg_order_id=e76346a58c9c4c44bfa4e2f8600d9215&pg_payment_id=21404388&pg_amount=1.0000&pg_currency=RUR&pg_net_amount=0.94&pg_ps_amount=1&pg_ps_full_amount=1.00&pg_ps_currency=RUR&pg_payment_system=YANDEXMONEY&pg_result=1&pg_payment_date=2015-10-28+00%3A16%3A09&pg_can_reject=1&pg_user_phone=79261238736&pg_need_phone_notification=1&pg_sig=b6d3e98ff7ead152dcf8c3b1da9a15cb");
-            var client = new PlatronClient("0000", "secret");
-            client.ResultUrl.Parse(value);
         }
 
         [Fact]
@@ -66,6 +45,7 @@ namespace Platron.Client.Tests
             Assert.Equal(ErrorCode.InvalidSignature, exception.Error.Code);
         }
 
+        [Trait("Category", Categories.Integration)]
         [Fact]
         public async Task InitPayment_ValidMerchant_Succeeds()
         {
@@ -79,6 +59,7 @@ namespace Platron.Client.Tests
             Assert.NotNull(response.RedirectUrl);
         }
 
+        [Trait("Category", Categories.Integration)]
         [Fact]
         public async Task InitPaymentAsHtml_ValidMerchant_ReturnsHtml()
         {
@@ -111,6 +92,7 @@ namespace Platron.Client.Tests
             Assert.True(html.Content.Contains("Incorrect merchant"));
         }
 
+        [Trait("Category", Categories.Integration)]
         [Theory]
         [InlineData(HttpRequestEncodingType.Get, InitPaymentResponseType.RedirectLink)]
         [InlineData(HttpRequestEncodingType.Get, InitPaymentResponseType.HtmlForm)]
@@ -123,6 +105,8 @@ namespace Platron.Client.Tests
         {
             var connection = new Connection(PlatronClient.PlatronUrl, SettingsStorage.Credentials, encodingType);
             var client = new PlatronClient(connection);
+            // To find out what really happens enable proxy (thru fiddler)
+            // and use custom connection over http to watch plain requests
             //.EnableProxy(new WebProxy("http://localhost:8888", false));
 
             var initPayment = new InitPaymentRequest(1.Rur(), "Money first");

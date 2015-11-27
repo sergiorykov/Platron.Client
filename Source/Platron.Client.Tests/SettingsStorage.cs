@@ -7,5 +7,7 @@ namespace Platron.Client.Tests
         public static Credentials Credentials => new Credentials(
             Environment.GetEnvironmentVariable("PLATRON_MERCHANTID"),
             Environment.GetEnvironmentVariable("PLATRON_SECRETKEY"));
+
+        public static string PhoneNumber => Environment.GetEnvironmentVariable("PLATRON_PHONENUMBER") ?? string.Empty;
     }
 }
