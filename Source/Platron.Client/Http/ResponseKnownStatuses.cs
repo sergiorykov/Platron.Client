@@ -4,6 +4,6 @@
     {
         public static readonly string Ok = "ok";
         public static readonly string Error = "error";
-        public static readonly string Reject = "reject";
+        public static readonly string Rejected = "rejected";
     }
 }

@@ -63,7 +63,7 @@ namespace Platron.Client
         {
             var plain = new PlainResponseWithDescription
             {
-                Status = ResponseKnownStatuses.Reject,
+                Status = ResponseKnownStatuses.Rejected,
                 Description = description
             };
             return _callback.EncodeResponse(new ApiCallbackResponse(request.Uri, plain));
