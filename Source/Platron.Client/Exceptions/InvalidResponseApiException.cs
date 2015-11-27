@@ -1,3 +1,4 @@
+using System;
 using Platron.Client.Http;
 
 namespace Platron.Client
@@ -11,6 +12,14 @@ namespace Platron.Client
         ///     Constructs an instance of exception.
         /// </summary>
         public InvalidResponseApiException(string message, IHttpResponse httpResponse) : base(message)
+        {
+            HttpResponse = httpResponse;
+        }
+
+        /// <summary>
+        ///     Constructs an instance of exception.
+        /// </summary>
+        public InvalidResponseApiException(string message, IHttpResponse httpResponse, Exception innerException) : base(message, innerException)
         {
             HttpResponse = httpResponse;
         }
