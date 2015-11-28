@@ -25,8 +25,8 @@ namespace Platron.Client.Tests.Integration
 
         [Trait("Category", Categories.Integration)]
         [Trait("Category", Categories.Manual)]
-        [Fact]
-//        [Fact(Skip = "Manual execution only. Requires real payment with subsequent rejection.")]
+//        [Fact]
+        [Fact(Skip = "Manual execution only. Requires real payment with subsequent rejection.")]
         public async Task FullPayment_ManualPaymentThruBrowser_Succeeds()
         {
             var connection = new Connection(PlatronClient.PlatronUrl, SettingsStorage.Credentials,
