@@ -25,3 +25,5 @@ out
 [Oo]bj
 Source/packages/
 /Source/*.vsext
+
+/Tools/*/*

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+    <metadata>
+        <id>Platron.Client</id>
+        <version>$version$</version>
+        <authors>Sergio Rykov</authors>
+        <owners>sergiorykov</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <!-- <licenseUrl>https://github.com/sergiorykov/Platron.Client/blob/master/LICENSE</licenseUrl> -->
+        <projectUrl>https://github.com/sergiorykov/Platron.Client</projectUrl>
+        <description>
+            Platron.Client is a Platron API client library to enable integration with payment service https://platron.ru
+        </description>
+        <iconUrl>https://www.platron.ru/favicon.ico</iconUrl>
+        <summary>A Platron API client library</summary>
+        <language>en-US</language>
+        <tags>API client Platron</tags>		
+    </metadata>
+    <files>
+        <!-- <file src="tools\**\*.*" target="tools" /> -->
+        <file src="lib\**\*.*" target="lib" />
+    </files>
+</package>

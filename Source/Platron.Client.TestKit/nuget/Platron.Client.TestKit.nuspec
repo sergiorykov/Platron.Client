@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+    <metadata>
+        <id>Platron.Client.TestKit</id>
+        <version>$version$</version>
+        <authors>Sergio Rykov</authors>
+        <owners>sergiorykov</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <!-- <licenseUrl>https://github.com/sergiorykov/Platron.Client/blob/master/LICENSE</licenseUrl> -->
+        <projectUrl>https://github.com/sergiorykov/Platron.Client</projectUrl>
+        <description>
+            Tools for writing integration tests using Platron API client library Platron.Client to payment service https://platron.ru 
+        </description>
+        <iconUrl>https://www.platron.ru/favicon.ico</iconUrl>
+        <summary>Tools for integration testing of Platron API client library Platron.Client</summary>
+        <language>en-US</language>
+        <tags>API client Platron TestKit</tags>		
+		<dependencies>		
+			<dependency id="Platron.Client" version="$version$"/>
+        </dependencies> 
+    </metadata>
+    <files>
+        <!-- <file src="tools\**\*.*" target="tools" /> -->
+        <file src="lib\**\*.*" target="lib" />
+    </files>
+</package>
