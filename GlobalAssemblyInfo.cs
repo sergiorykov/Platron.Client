@@ -11,8 +11,7 @@
 [assembly: System.Reflection.AssemblyProduct("Platron API client")]
 [assembly: System.Reflection.AssemblyCopyright("Copyright © Sergio Rykov. Since 2015")]
 [assembly: System.Reflection.AssemblyConfiguration("Release")]
-[assembly: System.Reflection.AssemblyVersion("1.0.2")]
-[assembly: System.Reflection.AssemblyFileVersion("1.0.2")]
-[assembly: System.Reflection.AssemblyInformationalVersion("Compiled By Sergio")]
+[assembly: System.Reflection.AssemblyVersion("1.0.1")]
+[assembly: System.Reflection.AssemblyFileVersion("1.0.1")]
 
 
