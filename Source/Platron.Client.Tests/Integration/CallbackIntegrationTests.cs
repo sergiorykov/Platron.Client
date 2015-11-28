@@ -12,15 +12,15 @@ namespace Platron.Client.Tests.Integration
 {
     public sealed class CallbackIntegrationTests : IClassFixture<CallbackServerEmulator>
     {
+        private readonly CallbackServerEmulator _server;
         private readonly ITestOutputHelper _output;
-        private readonly Uri _baseAddress;
 
         public CallbackIntegrationTests(CallbackServerEmulator server, ITestOutputHelper output)
         {
             server.Start();
 
+            _server = server;
             _output = output;
-            _baseAddress = server.ExternalAddress;
         }
 
         [Trait("Category", Categories.Integration)]
@@ -36,7 +36,7 @@ namespace Platron.Client.Tests.Integration
 
             var initPaymentRequest = new InitPaymentRequest(1.01.Rur(), "verifying resulturl")
                                      {
-                                         ResultUrl = new Uri(_baseAddress, PlatronModule.ResultUrlRoute),
+                                         ResultUrl = _server.ResultUrl,
                                          UserPhone = SettingsStorage.PhoneNumber,
                                          OrderId = Guid.NewGuid().ToString("N"),
                                          NeedUserPhoneNotification = true
@@ -53,10 +53,10 @@ namespace Platron.Client.Tests.Integration
             Browser.Open(response.RedirectUrl);
 
             // we have some time to manually finish payment.
-            var request = PlatronModule.WaitForRequest(TimeSpan.FromMinutes(3));
-            _output.WriteLine(request.Url);
+            var request = _server.WaitForRequest(TimeSpan.FromMinutes(3));
+            _output.WriteLine(request.Uri.AbsoluteUri);
 
-            var resultUrl = client.ResultUrl.Parse(request.Url);
+            var resultUrl = client.ResultUrl.Parse(request.Uri);
 
             // to return money back - it's enough to reject payment
             // and hope that your payment service supports it.

@@ -35,6 +35,12 @@ namespace Platron.Client.TestKit.Emulators
             Port = port;
         }
 
+        public Uri ResultUrl => new Uri(ExternalAddress, PlatronModule.ResultUrlRoute);
+
+        public ServerRequestContext WaitForRequest(TimeSpan timeout)
+        {
+            return PlatronModule.WaitForRequest(TimeSpan.FromMinutes(3));
+        }
         public void Stop()
         {
             if (_tunnel != null)
