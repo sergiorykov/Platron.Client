@@ -17,7 +17,7 @@ namespace Platron.Client.Tests
         {
             var initPayment = new InitPaymentRequest(1.Rur(), "sample description");
 
-            var connection = new Connection(new Uri(notAvailableUrl), new Credentials("0000", "secret"));
+            var connection = new Connection(new Uri(notAvailableUrl), new Credentials("0000", "secret"), TimeSpan.FromSeconds(5));
             var client = new PlatronClient(connection);
 
             await Assert.ThrowsAsync<ServiceNotAvailableApiException>(() => client.InitPaymentAsync(initPayment));

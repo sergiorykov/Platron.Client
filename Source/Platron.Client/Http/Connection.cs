@@ -27,14 +27,18 @@ namespace Platron.Client.Http
         {
         }
 
-        public Connection(Uri baseAddress, Credentials credentials,
-            HttpRequestEncodingType httpRequestEncodingType = HttpRequestEncodingType.PostWithXml)
-            : this(baseAddress, credentials, new XmlPipeline(), httpRequestEncodingType)
+        public Connection(Uri baseAddress, Credentials credentials, HttpRequestEncodingType httpRequestEncodingType = HttpRequestEncodingType.PostWithXml)
+            : this(baseAddress, credentials, TimeSpan.FromSeconds(30), new XmlPipeline(), httpRequestEncodingType)
         {
         }
 
-        public Connection(Uri baseAddress, Credentials credentials, IXmlPipeline xmlPipeline,
-            HttpRequestEncodingType httpRequestEncodingType = HttpRequestEncodingType.PostWithXml)
+
+        public Connection(Uri baseAddress, Credentials credentials, TimeSpan timeout, HttpRequestEncodingType httpRequestEncodingType = HttpRequestEncodingType.PostWithXml)
+            : this(baseAddress, credentials, timeout, new XmlPipeline(), httpRequestEncodingType)
+        {
+        }
+
+        public Connection(Uri baseAddress, Credentials credentials, TimeSpan timeout, IXmlPipeline xmlPipeline, HttpRequestEncodingType httpRequestEncodingType = HttpRequestEncodingType.PostWithXml)
         {
             Ensure.ArgumentNotNull(baseAddress, "baseAddress");
             Ensure.ArgumentNotNull(credentials, "credentials");
@@ -51,7 +55,11 @@ namespace Platron.Client.Http
             _authenticator = new Authenticator(credentials, xmlPipeline);
             _httpRequestEncoder = new HttpRequestEncoder(xmlPipeline, httpRequestEncodingType);
 
-            _httpClient = new HttpClient { BaseAddress = baseAddress };
+            _httpClient = new HttpClient
+                          {
+                              BaseAddress = baseAddress,
+                              Timeout = timeout
+                          };
 
             BaseAddress = baseAddress;
             Callback = new CallbackResponder(_authenticator, _xmlPipeline);

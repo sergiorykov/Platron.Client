@@ -14,7 +14,13 @@ namespace Platron.Client
         {
         }
 
-        public PlatronClient(Credentials credentials) : this(new Connection(PlatronUrl, credentials))
+        public PlatronClient(Credentials credentials, HttpRequestEncodingType httpRequestEncodingType = HttpRequestEncodingType.Get)
+            : this(new Connection(PlatronUrl, credentials, httpRequestEncodingType))
+        {
+        }
+
+        public PlatronClient(Credentials credentials, TimeSpan timeout, HttpRequestEncodingType httpRequestEncodingType = HttpRequestEncodingType.Get)
+            : this(new Connection(PlatronUrl, credentials, timeout, httpRequestEncodingType))
         {
         }
 
