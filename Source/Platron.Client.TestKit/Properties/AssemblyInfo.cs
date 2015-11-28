@@ -7,11 +7,6 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Platron.Client.TestKit")]
 [assembly: AssemblyDescription("TestKit for testing integration scenarios with Platron.Client")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Rykov Sergio")]
-[assembly: AssemblyProduct("Platron.Client.TestKit")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
-[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -35,5 +30,6 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+// using GlobalAssemblyInfo.cs
+// [assembly: AssemblyVersion("1.0.0.0")]
+// [assembly: AssemblyFileVersion("1.0.0.0")]

@@ -82,6 +82,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Emulators\CallbackServerEmulator.cs" />
     <Compile Include="Emulators\Tunnels\NgrokTunnel.cs" />
     <Compile Include="Emulators\ServerRequestContext.cs" />
