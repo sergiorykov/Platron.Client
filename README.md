@@ -1,6 +1,8 @@
 
 # Platron.Client
-A Platron API client library for .NET.
+A Platron API client library for .NET. Available on [Nuget](https://www.nuget.org/packages/Platron.Client).
+
+For simplifying integration tests released [TestKit on Nuget](https://www.nuget.org/packages/Platron.Client.TestKit).
 
 Based on API **version 3.5** ([EN](http://www.platron.ru/integration/Merchant_Platron_API_EN.pdf "Merchant_Platron_API_EN.pdf") | [RU](http://www.platron.ru/integration/Merchant_Platron_API_RU.pdf "Merchant_Platron_API_RU.pdf"))
 
@@ -9,7 +11,7 @@ Based on API **version 3.5** ([EN](http://www.platron.ru/integration/Merchant_Pl
 
 # Getting started
 
-We will proceed showing how to process payment for order `#1234567890`. 
+We will show how to process payment for sample order `#1234567890`. 
 
 Client sends to server request to proceed order payment. Server initiates payment sending request to Platron. Platron can return html page to let server show it by itself or redirect url. We will use redirect url. 
 
@@ -85,13 +87,6 @@ public sealed class PlatronModule : NancyModule
 }
 ```
 
-
-# Building
-
-If you don't have installed VS extension NuGet Package Manager, then install it or just execute `restore.cmd`. 
-
-Open solution `Source\Platron.sln` and build it. 
-
 # Testing
 
 Tests separated into several categories. 
@@ -103,6 +98,112 @@ Tests separated into several categories.
 	PLATRON_PHONENUMBER=+79990001112
 
 `Manual` tests ignored by default - they require interraption of test to fullfill - guess what :) - manual action like proceeding real payment for 1 ruble using your preferred payment system and then rejecting it by emulator of shop server. Platron has testing payment systems but you cann't complete scenario with it and receive confirmation ResultUrl callback from Platron.
+
+# Integration Testing
+
+You can drastically simplify integration testing using package [Platron.Client.TestKit](https://www.nuget.org/packages/Platron.Client.TestKit). It requires a lot of dependencies like Nansy, Owin, RX but it's made to be able write integration test in a few lines of code (we used XUnit):
+
+```csharp
+public sealed class CallbackIntegrationTests : IClassFixture<CallbackServerEmulator>
+{
+    private readonly CallbackServerEmulator _server;
+    private readonly ITestOutputHelper _output;
+
+    public CallbackIntegrationTests(CallbackServerEmulator server, ITestOutputHelper output)
+    {
+        server.Start();
+
+        _server = server;
+        _output = output;
+    }
+
+    [Fact]
+    public async Task FullPayment_ManualPaymentThruBrowser_Succeeds()
+    {
+        var connection = new Connection(PlatronClient.PlatronUrl, SettingsStorage.Credentials,
+            HttpRequestEncodingType.PostWithQueryString);
+
+        var client = new PlatronClient(connection);
+
+        var initPaymentRequest = new InitPaymentRequest(1.01.Rur(), "verifying resulturl")
+                                    {
+                                        ResultUrl = _server.ResultUrl,
+                                        UserPhone = SettingsStorage.PhoneNumber,
+                                        OrderId = Guid.NewGuid().ToString("N"),
+                                        NeedUserPhoneNotification = true
+                                    };
+
+        // enables only test systems
+        //initPaymentRequest.InTestMode();
+
+        var response = await client.InitPaymentAsync(initPaymentRequest);
+
+        // open browser = selenium can be here ^)
+        Assert.NotNull(response);
+        Assert.NotNull(response.RedirectUrl);
+        Browser.Open(response.RedirectUrl);
+
+        // we have some time to manually finish payment.
+        var request = _server.WaitForRequest(TimeSpan.FromMinutes(3));
+        _output.WriteLine(request.Uri.AbsoluteUri);
+
+        var resultUrl = client.ResultUrl.Parse(request.Uri);
+
+        // to return money back - it's enough to reject payment
+        // and hope that your payment service supports it.
+        var resultUrlResponse = client.ResultUrl.TryReturnReject(resultUrl, "sorry, my bad...");
+        _output.WriteLine(resultUrlResponse.Content);
+
+        request.SendResponse(resultUrlResponse.Content);
+    }
+}
+```
+
+You can [grab sources](https://github.com/sergiorykov/Platron.Client/blob/master/Source/Platron.Client.Tests/Integration/CallbackIntegrationTests.cs) and try it by yourself. You will need real credentials and magic souce to make your local server available to Platron. 
+
+To make it you will need tunnel service like https://forwardhq.com, https://ngrok.com or any similar. We choose ngrok - it has free of charge version working on a single address.  
+
+You will need to [download ngrok](https://ngrok.com/download) and make it available in PATH. Register free account and save API key. Everything else will  do automagically by `CallbackServerEmulator`:
+
+```csharp
+public sealed class CallbackServerEmulator : IDisposable
+{
+    private IDisposable _app;
+    private IDisposable _tunnel;
+
+    public Uri LocalAddress { get; private set; }
+    public Uri ExternalAddress { get; private set; }
+    public int Port { get; private set; }
+
+    public void Start()
+    {
+        var port = FreeTcpPort();
+        Start(port);
+    }
+
+    public void Start(int port)
+    {
+        _app = WebApp.Start<Startup>($"http://+:{port}");
+
+        // doesn't require license to run single instance with generated domain
+        var ngrok = new NgrokTunnel(port, TimeSpan.FromSeconds(2));
+        _tunnel = ngrok;
+
+        LocalAddress = new Uri($"http://localhost:{port}");
+        ExternalAddress = ngrok.HttpsAddress;
+        Port = port;
+    }
+    
+    /// Other methods
+}
+```
+
+
+# Building
+
+If you don't have installed VS extension NuGet Package Manager, then install it or just execute `restore.cmd`. 
+
+Open solution `Source\Platron.sln` and build it. 
 
 # Release
 
