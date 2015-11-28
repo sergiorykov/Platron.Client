@@ -47,13 +47,13 @@ namespace Platron.Client.Http
                         baseAddress), nameof(baseAddress));
             }
 
-            BaseAddress = baseAddress;
-
             _xmlPipeline = xmlPipeline;
-            _httpClient = new HttpClient {BaseAddress = baseAddress};
             _authenticator = new Authenticator(credentials, xmlPipeline);
-            _httpRequestEncoder = new HttpRequestEncoder(xmlPipeline);
+            _httpRequestEncoder = new HttpRequestEncoder(xmlPipeline, httpRequestEncodingType);
 
+            _httpClient = new HttpClient { BaseAddress = baseAddress };
+
+            BaseAddress = baseAddress;
             Callback = new CallbackResponder(_authenticator, _xmlPipeline);
         }
 
