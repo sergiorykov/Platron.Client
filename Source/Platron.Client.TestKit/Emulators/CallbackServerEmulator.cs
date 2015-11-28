@@ -24,13 +24,13 @@ namespace Platron.Client.TestKit.Emulators
 
         public void Start(int port)
         {
-            _app = WebApp.Start<Startup>($"http://+:{Port}");
+            _app = WebApp.Start<Startup>($"http://+:{port}");
 
             // doesn't require license to run single instance with generated domain
-            var ngrok = new NgrokTunnel(Port, TimeSpan.FromSeconds(2));
+            var ngrok = new NgrokTunnel(port, TimeSpan.FromSeconds(2));
             _tunnel = ngrok;
 
-            LocalAddress = new Uri($"http://localhost:{Port}");
+            LocalAddress = new Uri($"http://localhost:{port}");
             ExternalAddress = ngrok.HttpsAddress;
             Port = port;
         }

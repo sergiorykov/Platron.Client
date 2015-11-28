@@ -20,6 +20,9 @@ namespace Platron.Client.TestKit.Emulators
         {
             Response = response;
             _awaitResponse.Set();
+
+            // to allow nancy send response back
+            Thread.Sleep(250);
         }
 
         public void WaitForResponse(TimeSpan timeout)
