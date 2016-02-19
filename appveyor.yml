@@ -1,4 +1,7 @@
 # https://www.appveyor.com/docs/appveyor-yml
+# https://github.com/zeromq/czmq/blob/master/appveyor.yml
+# https://github.com/fsprojects/Paket/blob/master/appveyor.yml
+
 version: 1.1.{build}
 
 # branches to build
@@ -19,11 +22,15 @@ cache:
   - Source\packages -> **\packages.config
   - Tools -> **\packages.config
 
-install:
+# https://www.appveyor.com/docs/environment-variables
+init:
   - echo Starting building Platron.Client ...
+  - echo build version %APPVEYOR_BUILD_VERSION%
+  - echo build number %APPVEYOR_BUILD_NUMBER%
+  - msbuild /version  
 
 build_script:
-  - cmd: release.cmd %appveyor_build_version%
+  - cmd: release.cmd %APPVEYOR_BUILD_VERSION%
 
 test: off
 
