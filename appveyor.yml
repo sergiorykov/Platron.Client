@@ -1,0 +1,48 @@
+# https://www.appveyor.com/docs/appveyor-yml
+version: 1.1.{build}
+
+# branches to build
+branches:
+  # whitelist
+  only:
+    - master
+    - production
+
+  # blacklist
+  except:
+    - gh-pages
+
+# Do not build on tags (GitHub only)
+skip_tags: true
+
+cache:
+  - Source\packages -> **\packages.config
+  - Tools -> **\packages.config
+
+install:
+  - echo Starting building Platron.Client ...
+
+platform: Any CPU
+configuration: Release
+
+build_script:
+  - cmd: release.cmd 
+
+test: off
+
+artifacts:
+  - path: out\Release\Packages\*.nupkg
+
+notifications:
+
+  # Email
+  - provider: Email
+    to:
+      - sergior@bk.ru
+    subject: 'Platron.Client Build {{status}}'                  
+    message: "{{message}}, {{commitId}}, ..."    
+    on_build_status_changed: true
+
+  # Slack
+#  - provider: Slack
+#    incoming_webhook: http://incoming-webhook-url
