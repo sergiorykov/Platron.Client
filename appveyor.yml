@@ -22,11 +22,8 @@ cache:
 install:
   - echo Starting building Platron.Client ...
 
-platform: Any CPU
-configuration: Release
-
 build_script:
-  - cmd: release.cmd 
+  - cmd: release.cmd %appveyor_build_version%
 
 test: off
 
