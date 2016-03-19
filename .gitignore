@@ -27,4 +27,7 @@ Source/packages/
 /Source/*.vsext
 
 /Tools/*/*
+GlobalAssemblyInfo.cs
+
 !/Tools/nuget.exe
+!/Tools/packages.config
