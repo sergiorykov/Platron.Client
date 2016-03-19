@@ -27,3 +27,4 @@ Source/packages/
 /Source/*.vsext
 
 /Tools/*/*
+!/Tools/nuget.exe
