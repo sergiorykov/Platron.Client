@@ -6,10 +6,13 @@ namespace Platron.Client
     {
         None,
 
-        [Description("RUR")] Rur,
+        [Description("RUB")]
+        Rub,
 
-        [Description("USD")] Usd,
+        [Description("USD")]
+        Usd,
 
-        [Description("EUR")] Eur
+        [Description("EUR")]
+        Eur
     }
 }

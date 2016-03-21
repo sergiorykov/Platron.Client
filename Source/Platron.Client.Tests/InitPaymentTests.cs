@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Platron.Client.Extensions;
+using Platron.Client.Http;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Platron.Client.Extensions;
-using Platron.Client.Http;
 using Xunit;
 
 namespace Platron.Client.Tests
@@ -15,7 +15,7 @@ namespace Platron.Client.Tests
         public async Task InitPayment_PlatronNotAvailableOrNotResolvable_ThrowsServiceNotAvailable(
             string notAvailableUrl, string description)
         {
-            var initPayment = new InitPaymentRequest(1.Rur(), "sample description");
+            var initPayment = new InitPaymentRequest(1.Rub(), "sample description");
 
             var connection = new Connection(new Uri(notAvailableUrl), new Credentials("0000", "secret"), TimeSpan.FromSeconds(5));
             var client = new PlatronClient(connection);
@@ -26,7 +26,7 @@ namespace Platron.Client.Tests
         [Fact]
         public async Task InitPayment_InvalidMerchant_ThrowsInvalidResponse()
         {
-            var initPayment = new InitPaymentRequest(1.Rur(), "sample description");
+            var initPayment = new InitPaymentRequest(1.Rub(), "sample description");
             var client = new PlatronClient("0000", "secret");
 
             var exception =
@@ -37,7 +37,7 @@ namespace Platron.Client.Tests
         [Fact]
         public async Task InitPayment_InvalidSecretKey_ThrowsInvalidResponse()
         {
-            var initPayment = new InitPaymentRequest(1.Rur(), "sample description");
+            var initPayment = new InitPaymentRequest(1.Usd(), "sample description");
             var client = new PlatronClient(SettingsStorage.Credentials.MerchantId, "secret");
 
             var exception =
@@ -49,7 +49,7 @@ namespace Platron.Client.Tests
         [Fact]
         public async Task InitPayment_ValidMerchant_Succeeds()
         {
-            var initPayment = new InitPaymentRequest(1.Usd(), "sample description");
+            var initPayment = new InitPaymentRequest(1.Rub(), "sample description");
             var client = new PlatronClient(SettingsStorage.Credentials);
 
             initPayment.InTestMode();
@@ -81,7 +81,7 @@ namespace Platron.Client.Tests
         [Fact]
         public async Task InitPaymentAsHtml_InvalidMerchant_ReturnsHtml()
         {
-            var initPayment = new InitPaymentRequest(1.Rur(), "sample description");
+            var initPayment = new InitPaymentRequest(1.Rub(), "sample description");
             initPayment.Language = PlatronLanguage.English; // doesn't work. still in russian
 
             var client = new PlatronClient("0000", "secret");
@@ -109,7 +109,7 @@ namespace Platron.Client.Tests
             // and use custom connection over http to watch plain requests
             //.EnableProxy(new WebProxy("http://localhost:8888", false));
 
-            var initPayment = new InitPaymentRequest(1.Rur(), "Money first");
+            var initPayment = new InitPaymentRequest(1.Rub(), "Money first");
             initPayment.InTestMode();
             initPayment.OrderId = Guid.NewGuid().ToString("N");
 

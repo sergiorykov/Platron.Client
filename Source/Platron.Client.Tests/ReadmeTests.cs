@@ -20,7 +20,7 @@ namespace Platron.Client.Tests
             // ensure that your server listens on that address and accepts GET request
             var resultUrl = new Uri("https://my.server.com/platron/result");
 
-            var request = new InitPaymentRequest(1.Rur(), "Order payment")
+            var request = new InitPaymentRequest(1.Rub(), "Order payment")
                           {
                               OrderId = "#1234567890",
                               UserPhone = "+79990001112",

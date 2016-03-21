@@ -34,7 +34,7 @@ namespace Platron.Client.Tests.Integration
 
             var client = new PlatronClient(connection);
 
-            var initPaymentRequest = new InitPaymentRequest(1.01.Rur(), "verifying resulturl")
+            var initPaymentRequest = new InitPaymentRequest(1.01.Rub(), "verifying resulturl")
                                      {
                                          ResultUrl = _server.ResultUrl,
                                          UserPhone = SettingsStorage.PhoneNumber,

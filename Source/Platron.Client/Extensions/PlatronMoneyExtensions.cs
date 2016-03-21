@@ -2,14 +2,14 @@
 {
     public static class PlatronMoneyExtensions
     {
-        public static PlatronMoney Rur(this double value)
+        public static PlatronMoney Rub(this double value)
         {
-            return new PlatronMoney(value, PlatronPaymentCurrency.Rur);
+            return new PlatronMoney(value, PlatronPaymentCurrency.Rub);
         }
 
-        public static PlatronMoney Rur(this int value)
+        public static PlatronMoney Rub(this int value)
         {
-            return new PlatronMoney(value, PlatronPaymentCurrency.Rur);
+            return new PlatronMoney(value, PlatronPaymentCurrency.Rub);
         }
 
         public static PlatronMoney Eur(this double value)
