@@ -1,5 +1,8 @@
 
-# Platron.Client [![NuGet](https://img.shields.io/nuget/v/Platron.Client.svg)]() [![AppVeyor](https://img.shields.io/appveyor/ci/sergiorykov/platron-client.svg)]()
+# Platron.Client 
+
+[![NuGet](https://img.shields.io/nuget/v/Platron.Client.svg)]() [![AppVeyor](https://img.shields.io/appveyor/ci/sergiorykov/platron-client.svg)]()
+
 A Platron API client library for .NET. 
 Based on API **version 3.5** ([EN](http://www.platron.ru/integration/Merchant_Platron_API_EN.pdf "Merchant_Platron_API_EN.pdf") | [RU](http://www.platron.ru/integration/Merchant_Platron_API_RU.pdf "Merchant_Platron_API_RU.pdf"))
 
@@ -102,7 +105,9 @@ Tests separated into several categories.
 
 `Manual` tests ignored by default - they require interraption of test to fulfill - guess what :) - manual action like proceeding real payment for 1 ruble using your preferred payment system and then rejecting it by emulator of shop server. Platron has testing payment systems but you cann't complete scenario with it and receive confirmation ResultUrl callback from Platron.
 
-# Integration Testing [![NuGet](https://img.shields.io/nuget/v/Platron.Client.TestKit.svg?label=Platron.Client.TestKit)]()
+# Integration Testing 
+
+[![NuGet](https://img.shields.io/nuget/v/Platron.Client.TestKit.svg?label=Platron.Client.TestKit)]()
 
 You can drastically simplify integration testing using package [Platron.Client.TestKit](https://www.nuget.org/packages/Platron.Client.TestKit). It requires a lot of dependencies like Nansy, Owin, RX but it's made to be able write integration test in a few lines of code (we used XUnit):
 
@@ -215,6 +220,8 @@ To issue release `X.Y.Z` execute
     release.cmd X.Y.Z
 and take packages from `out\Release\Packages`. It's that simple. 
 
-# Build server [![AppVeyor](https://img.shields.io/appveyor/ci/sergiorykov/platron-client.svg)]()
+# Build server 
+
+[![AppVeyor](https://img.shields.io/appveyor/ci/sergiorykov/platron-client.svg)]()
 
 Configured [base CI](https://github.com/sergiorykov/Platron.Client/blob/master/appveyor.yml) on [AppVeyor](https://ci.appveyor.com/project/sergiorykov/platron-client) to build every commit. Not ready to finish release pipeline.  
