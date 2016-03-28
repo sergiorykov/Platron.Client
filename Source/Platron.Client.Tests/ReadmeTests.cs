@@ -1,10 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Threading.Tasks;
-using Nancy;
+﻿using Nancy;
 using Platron.Client.Extensions;
 using Platron.Client.Http.Callbacks;
-using Platron.Client.TestKit.Emulators;
+using System;
+using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Platron.Client.Tests
@@ -21,11 +20,11 @@ namespace Platron.Client.Tests
             var resultUrl = new Uri("https://my.server.com/platron/result");
 
             var request = new InitPaymentRequest(1.Rub(), "Order payment")
-                          {
-                              OrderId = "#1234567890",
-                              UserPhone = "+79990001112",
-                              ResultUrl = resultUrl
-                          };
+            {
+                OrderId = "#1234567890",
+                UserPhone = "+79990001112",
+                ResultUrl = resultUrl
+            };
 
             InitPaymentResponse response = await client.InitPaymentAsync(request).ConfigureAwait(false);
             await SendToUserAsync(response.RedirectUrl).ConfigureAwait(false);
@@ -62,15 +61,15 @@ namespace Platron.Client.Tests
             private Response AsXml(CallbackResponse response)
             {
                 return new Response
-                       {
-                           ContentType = "application/xml; charset:utf-8",
-                           Contents = stream =>
-                           {
-                               var data = Encoding.UTF8.GetBytes(response.Content);
-                               stream.Write(data, 0, data.Length);
-                           },
-                           StatusCode = (HttpStatusCode) System.Net.HttpStatusCode.OK
-                       };
+                {
+                    ContentType = "application/xml; charset:utf-8",
+                    Contents = stream =>
+                    {
+                        var data = Encoding.UTF8.GetBytes(response.Content);
+                        stream.Write(data, 0, data.Length);
+                    },
+                    StatusCode = HttpStatusCode.OK
+                };
             }
         }
     }
